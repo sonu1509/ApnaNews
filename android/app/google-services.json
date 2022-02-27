@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "499952280222",
+    "project_id": "apnanews-aacb8",
+    "storage_bucket": "apnanews-aacb8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:499952280222:android:89733e0fc8b81ecfa8d18f",
+        "android_client_info": {
+          "package_name": "com.example.apna_news"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "499952280222-ttos8l7o682e62kcvj66juu07cjevett.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.apna_news",
+            "certificate_hash": "9f0855f923ac40a26eb9f8b4c0cafdf67a216742"
+          }
+        },
+        {
+          "client_id": "499952280222-ffsd228bmpdmhd86ps9tvmifkkcosiob.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyATTPbfxQ6h1o4jTFwBIhGEOuQoHkaPoSU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "499952280222-ffsd228bmpdmhd86ps9tvmifkkcosiob.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
