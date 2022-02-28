@@ -1,4 +1,4 @@
-import 'package:apna_news/home.dart';
+import 'package:apna_news/views/home.dart';
 import 'package:apna_news/login.dart';
 import 'package:apna_news/register.dart';
 import 'package:firebase_auth/firebase_auth.dart';
