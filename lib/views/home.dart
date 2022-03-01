@@ -4,8 +4,12 @@ import 'package:apna_news/models/article_model.dart';
 import 'package:apna_news/models/categori_model.dart';
 import 'package:apna_news/views/article_view.dart';
 import 'package:apna_news/views/category_news.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+
+import '../models/user_model.dart';
 
 class MyHome extends StatefulWidget {
   const MyHome({Key? key}) : super(key: key);
@@ -18,9 +22,21 @@ class _MyHomeState extends State<MyHome> {
   List<CategoryModel> categories = <CategoryModel>[];
   List<ArticleModel> articles = <ArticleModel>[];
   bool _loading = true;
+
+ User? user = FirebaseAuth.instance.currentUser;
+  UserModel loggedInUser = UserModel();
+
   @override
   void initState() {
     super.initState();
+    FirebaseFirestore.instance
+        .collection("users")
+        .doc(user!.uid)
+        .get()
+        .then((value) {
+      this.loggedInUser = UserModel.fromMap(value.data());
+      setState(() {});
+    });
     categories = getCategories();
     getNews();
   }
@@ -60,35 +76,130 @@ class _MyHomeState extends State<MyHome> {
           )
         ],
         elevation: 0.0,
+        /*leading: Container(
+          child: Icon(
+            Icons.notifications,
+            color: Colors.black,
+          ),
+          margin: EdgeInsets.only(left: 350),
+        ),*/
       ),
       drawer: Drawer(
         child: ListView(
-          // Important: Remove any padding from the ListView.
           padding: EdgeInsets.zero,
-
           children: <Widget>[
-            const DrawerHeader(
-              child: Text('Menu drawer'),
-              decoration: BoxDecoration(
-                color: Colors.blue,
+            UserAccountsDrawerHeader(
+              accountName: Text('SONU KUMAR'),
+              accountEmail: Text('Email :'),
+              currentAccountPicture: CircleAvatar(
+                backgroundImage: AssetImage('assets/login.png'),
               ),
+            ),
+            ListTile(
+              leading: Icon(
+                Icons.person,
+                size: 40,
+                color: Colors.black,
+              ),
+              title: Text(
+                'Profile',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+              onTap: () {
+                Navigator.pushNamed(context, 'Mprofile');
+              },
             ),
             ListTile(
               leading: Icon(
                 Icons.home,
                 size: 40,
+                color: Colors.green,
               ),
-              title: Text('First item'),
-              subtitle: Text("This is the 1st item"),
-              trailing: Icon(Icons.more_vert),
+              title: Text(
+                'Home',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+              //subtitle: Text("This is the 1st item"),
+              /*trailing: Icon(
+                Icons.more_vert,
+                color: Colors.black,
+              ),*/
+              onTap: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            ListTile(
+              leading: Icon(
+                Icons.dark_mode,
+                size: 40,
+                color: Colors.black,
+              ),
+              title: Text(
+                'Dark Mode',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
               onTap: () {},
             ),
             ListTile(
-              title: Text('Second item'),
+              leading: Icon(
+                Icons.notifications,
+                size: 40,
+                color: Colors.black,
+              ),
+              title: Text(
+                'Notification',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
               onTap: () {},
+            ),
+            ListTile(
+              leading: Icon(
+                Icons.logout_rounded,
+                size: 40,
+                color: Colors.red,
+              ),
+              title: Text(
+                'Logout',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+              onTap: () {
+                Navigator.pushNamed(context, 'login');
+              },
             ),
           ],
         ),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.home,
+              color: Colors.black,
+            ),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.ondemand_video,
+              color: Colors.black,
+            ),
+            label: 'Video',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.category,
+              color: Colors.black,
+            ),
+            label: 'Categories',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.person,
+              color: Colors.black,
+            ),
+            label: 'Profile',
+          ),
+        ],
       ),
       body: _loading
           ? Center(
