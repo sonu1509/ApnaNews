@@ -1,4 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:image_picker/image_picker.dart';
 
 class UserProfile extends StatefulWidget {
   const UserProfile({Key? key}) : super(key: key);
@@ -60,8 +64,8 @@ class _UserProfileState extends State<UserProfile> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       CircleAvatar(
-                        backgroundImage: NetworkImage(
-                          "https://www.rd.com/wp-content/uploads/2017/09/01-shutterstock_476340928-Irina-Bg.jpg",
+                        backgroundImage: AssetImage(
+                          "assets/logo.png",
                         ),
                         radius: 50.0,
                       ),
@@ -69,7 +73,7 @@ class _UserProfileState extends State<UserProfile> {
                         height: 10.0,
                       ),
                       Text(
-                        "Sonu Kumar",
+                        "User Id :",
                         style: TextStyle(
                           fontSize: 22.0,
                           color: Colors.white,
@@ -79,7 +83,7 @@ class _UserProfileState extends State<UserProfile> {
                         height: 10.0,
                       ),
                       Text(
-                        "sonu843317@gmail.com",
+                        '${FirebaseAuth.instance.currentUser!.email}',
                         style: TextStyle(
                           fontSize: 22.0,
                           color: Colors.white,
@@ -107,5 +111,16 @@ class _UserProfileState extends State<UserProfile> {
         ],
       ),
     );
+  }
+
+  _getFromGallery() async {
+    PickedFile? pickedFile = await ImagePicker().getImage(
+      source: ImageSource.gallery,
+      maxWidth: 1800,
+      maxHeight: 1800,
+    );
+    if (pickedFile != null) {
+      File imageFile = File(pickedFile.path);
+    }
   }
 }

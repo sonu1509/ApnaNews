@@ -8,7 +8,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-
 import '../models/user_model.dart';
 
 class MyHome extends StatefulWidget {
@@ -19,11 +18,12 @@ class MyHome extends StatefulWidget {
 }
 
 class _MyHomeState extends State<MyHome> {
+  var currentUser = FirebaseAuth.instance.currentUser;
   List<CategoryModel> categories = <CategoryModel>[];
   List<ArticleModel> articles = <ArticleModel>[];
   bool _loading = true;
 
- User? user = FirebaseAuth.instance.currentUser;
+  User? user = FirebaseAuth.instance.currentUser;
   UserModel loggedInUser = UserModel();
 
   @override
@@ -54,7 +54,6 @@ class _MyHomeState extends State<MyHome> {
     return Scaffold(
       appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.black),
-        centerTitle: true,
         backgroundColor: Colors.white,
         title:
             Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
@@ -68,31 +67,25 @@ class _MyHomeState extends State<MyHome> {
           ),
         ]),
         actions: <Widget>[
-          Opacity(
-            opacity: 0,
-            child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 16),
-                child: Icon(Icons.save)),
-          )
+          IconButton(
+            color: Colors.black,
+            icon: Icon(Icons.notification_important),
+            tooltip: 'Comment Icon',
+            onPressed: () {},
+          ),
         ],
         elevation: 0.0,
-        /*leading: Container(
-          child: Icon(
-            Icons.notifications,
-            color: Colors.black,
-          ),
-          margin: EdgeInsets.only(left: 350),
-        ),*/
       ),
       drawer: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,
           children: <Widget>[
             UserAccountsDrawerHeader(
-              accountName: Text('SONU KUMAR'),
-              accountEmail: Text('Email :'),
+              accountName: Text('User Id :'),
+              accountEmail:
+                  Text('Email: ${FirebaseAuth.instance.currentUser!.email}'),
               currentAccountPicture: CircleAvatar(
-                backgroundImage: AssetImage('assets/login.png'),
+                backgroundImage: AssetImage('assets/logo.png'),
               ),
             ),
             ListTile(
@@ -119,11 +112,6 @@ class _MyHomeState extends State<MyHome> {
                 'Home',
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
-              //subtitle: Text("This is the 1st item"),
-              /*trailing: Icon(
-                Icons.more_vert,
-                color: Colors.black,
-              ),*/
               onTap: () {
                 Navigator.of(context).pop();
               },
@@ -134,9 +122,11 @@ class _MyHomeState extends State<MyHome> {
                 size: 40,
                 color: Colors.black,
               ),
-              title: Text(
-                'Dark Mode',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              title: Container(
+                child: Text(
+                  'Dark Mode',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
               ),
               onTap: () {},
             ),
